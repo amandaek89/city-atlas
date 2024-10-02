@@ -9,6 +9,7 @@
 - Isabella Lindquist
 - Caroline Eklund
 - Amanda Ek
+- Andre Lilja
 
 ## Översikt
 **city-atlas** är en kraftfull och användarvänlig plattform för att hämta, hantera och presentera information om städer och länder världen över. Detta API gör det möjligt för utvecklare att enkelt integrera geografisk data i sina applikationer och skapa engagerande användarupplevelser.
