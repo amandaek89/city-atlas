@@ -1,4 +1,4 @@
 package com.cityatlas.services;
 
-public class CityRepo {
+public class CountryService {
 }
