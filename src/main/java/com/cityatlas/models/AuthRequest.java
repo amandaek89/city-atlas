@@ -1,10 +1,9 @@
-package com.cityatlas.dtos;
+package com.cityatlas.models;
 
 import lombok.Data;
 
 @Data
-public class UserDto {
-
+public class AuthRequest {
     private String username;
     private String password;
 }
