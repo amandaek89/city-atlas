@@ -6,73 +6,34 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 @Setter
 @Getter
-@Entity
+@Entity // Markerar denna klass som en JPA-entity
 public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // Stadens ID
 
-    private String name;
-    private int population;
-    private String knownFor;
+    private String name; // Stadens namn
+    private int population; // Antal invånare
+    private String knownFor; // Vad staden är känd för
 
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
+    @ManyToOne // Definierar en många-till-en relation med Country
+    @JoinColumn(name = "country_id") // Anger namnet på kolumnen i databasen
+    private Country country; // Kopplingen till landet
 
-    // Constructors, getters, and setters
+    // Standardkonstruktor
     public City() {}
 
+    // Konstruktor för att initiera City med värden
     public City(String name, int population, String knownFor, Country country) {
         this.name = name;
         this.population = population;
         this.knownFor = knownFor;
-        this.country = country;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(int population) {
-        this.population = population;
-    }
-
-    public String getKnownFor() {
-        return knownFor;
-    }
-
-    public void setKnownFor(String knownFor) {
-        this.knownFor = knownFor;
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
         this.country = country;
     }
 }
