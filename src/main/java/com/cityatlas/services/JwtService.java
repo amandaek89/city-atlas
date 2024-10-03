@@ -1,5 +1,6 @@
 package com.cityatlas.services;
 
+import com.cityatlas.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -61,14 +62,17 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(User user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", extractRoles(user));
+        claims.put("id", user.getId());
+        return createToken(claims, user.getUsername());
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
+    public String createToken(Map<String, Object> extraClaims, String username){
         return Jwts.builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getSigniInKey(), SignatureAlgorithm.HS256)
