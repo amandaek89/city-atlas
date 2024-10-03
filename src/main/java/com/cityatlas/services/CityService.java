@@ -26,7 +26,7 @@ public class CityService {
     public List<CityDto> getAllCities() {
         return cityRepo.findAll()
                 .stream()
-                .map(CityMapper::toDto) // Rättade toDTO till toDto
+                .map(CityMapper::toDto)
                 .collect(Collectors.toList());
     }
 
