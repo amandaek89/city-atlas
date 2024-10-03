@@ -2,7 +2,7 @@ package com.cityatlas.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor; //tom konstruktior för att skapa entiteter
+import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.util.List;
 
