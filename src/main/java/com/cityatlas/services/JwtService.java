@@ -19,9 +19,10 @@ import java.util.stream.Collectors;
 @Service
 public class JwtService {
 
-    @Value()
+    @Value("${jwt.expiration}")
     private long jwtExpiration;
-    @Value()
+
+    @Value("${jwt.secret}")
     private String secretKey;
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
