@@ -30,4 +30,8 @@ public class Country {
     private List<City> cities;
 
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> cec51dd1e07f8defe7efe8a94fc90fbcb845ea9e

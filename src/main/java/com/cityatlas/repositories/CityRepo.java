@@ -1,4 +1,7 @@
 package com.cityatlas.repositories;
 
-public class CityRepo {
+import com.cityatlas.models.City;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CityRepo extends JpaRepository<City, Long> {
 }
