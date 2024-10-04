@@ -21,7 +21,7 @@ public class Country {
 
     //child till världsdel
     @ManyToOne
-    @JoinColumn (name = "continent_id", nullable = false) //forgein key till världsdel
+    @JoinColumn(name = "continent_id", nullable = false) //forgein key till världsdel
     private Continent continent;
 
     //parent till city
@@ -29,9 +29,4 @@ public class Country {
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<City> cities;
 
-
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> cec51dd1e07f8defe7efe8a94fc90fbcb845ea9e
