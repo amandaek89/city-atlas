@@ -1,31 +1,33 @@
 package com.cityatlas.mappers;
 
 import com.cityatlas.dtos.CountryDto;
+import com.cityatlas.models.Continent;
 import com.cityatlas.models.Country;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CountryMapper {
 
-    //Country till CountryDto
+    //konvertera Country entity till CountryDto
     public CountryDto toDto(Country country) {
-        CountryDto dto = new CountryDto();
-        dto.setId(country.getId());
-        dto.setName(country.getName());
-        dto.setLanguage(country.getLanguage());
-        dto.setPopulation(country.getPopulation());
-        //continent id från parent
-        dto.setContinentID(country.getContinent().getId());
-        return dto;
+        return new CountryDto(
+                country.getId(),
+                country.getName(),
+                country.getLanguage(),
+                country.getPopulation(),
+                country.getContinent().getId() //hämtar id för Continent iom continent är parent
+        );
     }
 
-    //CountryDto till Country
-    public Country toEntity(CountryDto dto) {
-        Country country = new Country();
-        country.setName(dto.getName());
-        country.setLanguage(dto.getLanguage());
-        country.setPopulation(dto.getPopulation());
-        //koppla continent även här?
-        return country;
+    //konvertera CountryDto till Country entity
+    public Country toEntity(CountryDto countryDto, Continent continent) {
+        return new Country(
+                countryDto.getId(),
+                countryDto.getName(),
+                countryDto.getLanguage(),
+                countryDto.getPopulation(),
+                continent, //Continent som parent
+                null
+        );
     }
 }

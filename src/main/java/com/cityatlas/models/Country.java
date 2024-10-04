@@ -19,7 +19,7 @@ public class Country {
     private String language;
     private Long population;
 
-    //child till världsdel
+    //child till världsdel - KAN VARA NULL
     @ManyToOne
     @JoinColumn(name = "continent_id", nullable = false) //forgein key till världsdel
     private Continent continent;

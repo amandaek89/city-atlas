@@ -12,5 +12,5 @@ public class CountryDto {
     private String name;
     private String language;
     private Long population;
-    private Long continentID; //ref till världsdel då det är childpost
+    private Long continentID; //ref till världsdel då Continent är parent
 }
