@@ -17,7 +17,7 @@ public class CountryController {
 
     @Autowired
     public CountryController(CountryService countryService) {
-        this.countryService =countryService;
+        this.countryService = countryService;
     }
 
     //hämta listan över länder
