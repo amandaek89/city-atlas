@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -22,20 +23,28 @@ public class UserController {
         this.userService = userService;
     }
 
-    public ResponseEntity<UserDto> getUser(@PathVariable String username) {
+    public ResponseEntity<Optional<UserDto>> getUser(@PathVariable String username) {
         return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")     //Ska vi ha denna?
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) {
         return ResponseEntity.ok(userService.createUser(user));
     }
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto user) {
-        return ResponseEntity.ok(userService.updateUser(id, user));
+    public ResponseEntity<UserDto> updateUser(@PathVariable String username, @RequestBody UserDto user) {
+        return ResponseEntity.ok(userService.updateUser(username, user));
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
+        return ResponseEntity.ok("User deleted");
     }
 
 }
