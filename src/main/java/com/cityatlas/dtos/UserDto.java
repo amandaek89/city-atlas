@@ -13,4 +13,10 @@ public class UserDto {
     private String username;
 
     private Set<Role> authorities = new HashSet<>();
+
+    public UserDto(long id, String username, Set<Role> authorities) {
+        this.id = id;
+        this.username = username;
+        this.authorities = authorities;
+    }
 }
