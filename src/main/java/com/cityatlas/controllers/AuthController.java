@@ -3,8 +3,8 @@ package com.cityatlas.controllers;
 import com.cityatlas.dtos.UserDto;
 import com.cityatlas.models.AuthRequest;
 import com.cityatlas.models.AuthResponse;
-import com.cityatlas.models.User;
 import com.cityatlas.services.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,14 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    @Autowired
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
     // Endpoint för att registrera en ny användare
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDto user) {
-        authService.register(user);
+    public ResponseEntity<String> register(@RequestBody AuthRequest authRequest) {
+        authService.register(authRequest);
         return ResponseEntity.ok("User registered successfully");
     }
 

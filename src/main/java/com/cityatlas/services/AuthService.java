@@ -4,6 +4,7 @@ import com.cityatlas.dtos.UserDto;
 import com.cityatlas.models.AuthRequest;
 import com.cityatlas.models.User;
 import com.cityatlas.repositories.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,22 +16,22 @@ public class AuthService {
     private final UserRepo userRepo;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-
+    @Autowired
     public AuthService(UserRepo userRepo, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void register(UserDto user) {
+    public void register(AuthRequest authRequest) {
 
-        if (userRepo.findByUsername(user.getUsername()) != null) {
+        if (userRepo.findByUsername(authRequest.getUsername()) != null) {
             throw new RuntimeException("User already exists");
         }
 
         User newUser = new User();
 
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setPassword(passwordEncoder.encode(authRequest.getPassword()));
         newUser.setCreatedAt(new Date());
         newUser.setUpdatedAt(new Date());
         userRepo.save(newUser);
