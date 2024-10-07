@@ -31,6 +31,7 @@ public class AuthService {
 
         User newUser = new User();
 
+        newUser.setUsername(authRequest.getUsername());
         newUser.setPassword(passwordEncoder.encode(authRequest.getPassword()));
         newUser.setCreatedAt(new Date());
         newUser.setUpdatedAt(new Date());
