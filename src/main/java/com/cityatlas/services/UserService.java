@@ -49,11 +49,19 @@ public class UserService {
         }
     }
 
-    public UserDto setRoles(UserDto user) {
-        UserDto userToUpdate = getUserByUsername(user.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
-        userToUpdate.setAuthorities(user.getAuthorities());
-        return userToUpdate;
+    public UserDto setRoles(UserDto userDto) {
+        User userToUpdate = userRepo.findByUsername(userDto.getUsername());
+        if (userToUpdate == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        userToUpdate.setAuthorities(userDto.getAuthorities());
+        User updatedUser = userRepo.save(userToUpdate);
+
+        return new UserDto(updatedUser.getId(), updatedUser.getUsername(), updatedUser.getAuthorities());
     }
+
+
 
     public void deleteUser(String username) {
         User user = userRepo.findByUsername(username);
@@ -65,11 +73,7 @@ public class UserService {
         }
     }
 
-    public UserDto setRoles(String username, UserDto user){
-        UserDto userToSetRoles = getUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-        userToSetRoles.setAuthorities(user.getAuthorities());
-        return userToSetRoles;
-    }
+
 
 
 
