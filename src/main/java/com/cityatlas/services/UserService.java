@@ -62,6 +62,12 @@ public class UserService {
         }
     }
 
+    public UserDto setRoles(String username, UserDto user){
+        UserDto userToSetRoles = getUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        userToSetRoles.setAuthorities(user.getAuthorities());
+        return userToSetRoles;
+    }
+
 
 
 

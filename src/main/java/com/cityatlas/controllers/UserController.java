@@ -1,5 +1,6 @@
 package com.cityatlas.controllers;
 
+import com.cityatlas.dtos.ChangePasswordDto;
 import com.cityatlas.dtos.UserDto;
 import com.cityatlas.services.JwtService;
 import com.cityatlas.services.UserService;
@@ -32,11 +33,17 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
     @PutMapping
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @AuthenticationPrincipal UserDetails userDetails) {
-
-        String loggedInUsername = userDetails.getUsername();
-
-        return ResponseEntity.ok(userService.updateUser(userDto, loggedInUsername));
+    public ResponseEntity<String> updatePassword(@RequestBody ChangePasswordDto changePasswordDto, @AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        String password = userDetails.getPassword();
+        if (changePasswordDto.getNewPassword().equals(password)) {
+            throw new RuntimeException("New password cannot be the same as the old password");
+        }
+        if (changePasswordDto.getCurrentPassword().equals(password)){
+            throw new RuntimeException("Current password is incorrect");
+        }
+        userService.updatePassword(username, changePasswordDto);
+        return ResponseEntity.ok("Password updated");
     }
     @DeleteMapping("/{username}")
     public ResponseEntity<String> deleteUser(@PathVariable String username) {
@@ -54,5 +61,6 @@ public class UserController {
 
         return ResponseEntity.ok(userService.setRoles(userDto));
     }
+
 
 }
