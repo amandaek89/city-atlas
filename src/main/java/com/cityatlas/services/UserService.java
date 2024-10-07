@@ -3,7 +3,11 @@ package com.cityatlas.services;
 import com.cityatlas.dtos.UserDto;
 import com.cityatlas.models.User;
 import com.cityatlas.repositories.UserRepo;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,9 +36,18 @@ public class UserService {
                 .map(user -> new UserDto(user.getId(), user.getUsername(), user.getAuthorities()));
     }
 
-    public UserDto updateUser(String username, UserDto user){
-        UserDto userToUpdate = getUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+    public UserDto updateUser(UserDto user, String loggedInUsername) {
+        if (user.getUsername().equals(loggedInUsername)) {
+            throw new RuntimeException("You are not allowed to update your own roles!");
+        }
+        UserDto userToUpdate = getUserByUsername(user.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
         userToUpdate.setUsername(user.getUsername());
+        userToUpdate.setAuthorities(user.getAuthorities());
+        return userToUpdate;
+    }
+
+    public UserDto setRoles(UserDto user) {
+        UserDto userToUpdate = getUserByUsername(user.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
         userToUpdate.setAuthorities(user.getAuthorities());
         return userToUpdate;
     }
@@ -48,6 +61,7 @@ public class UserService {
             throw new RuntimeException("User not found");
         }
     }
+
 
 
 
