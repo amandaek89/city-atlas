@@ -1,5 +1,6 @@
 package com.cityatlas.services;
 
+import com.cityatlas.dtos.ChangePasswordDto;
 import com.cityatlas.dtos.UserDto;
 import com.cityatlas.models.User;
 import com.cityatlas.repositories.UserRepo;
@@ -36,14 +37,16 @@ public class UserService {
                 .map(user -> new UserDto(user.getId(), user.getUsername(), user.getAuthorities()));
     }
 
-    public UserDto updateUser(UserDto user, String loggedInUsername) {
-        if (user.getUsername().equals(loggedInUsername)) {
-            throw new RuntimeException("You are not allowed to update your own roles!");
+    public String updatePassword (String username, ChangePasswordDto changePasswordDto){
+        User user = userRepo.findByUsername(username);
+        if (user != null) {
+            user.setPassword(changePasswordDto.getNewPassword());
+            userRepo.save(user);
+            return "Password updated";
         }
-        UserDto userToUpdate = getUserByUsername(user.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
-        userToUpdate.setUsername(user.getUsername());
-        userToUpdate.setAuthorities(user.getAuthorities());
-        return userToUpdate;
+        else {
+            throw new RuntimeException("User not found");
+        }
     }
 
     public UserDto setRoles(UserDto user) {
