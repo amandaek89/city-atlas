@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 //endpoint alla länder
-@RequestMapping("/api/countries")
+@RequestMapping("/user/countries")
 public class CountryController {
 
     private final CountryService countryService;
@@ -31,13 +31,13 @@ public class CountryController {
     }
 
     //uppdatera ett land
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public CountryDto updateCountry(@PathVariable Long id, @RequestBody CountryDto updatedCountryDto) {
         return countryService.updateCountry(id, updatedCountryDto);
     }
 
     //ta bort ett land
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public void deleteCountry(@PathVariable Long id) {
         countryService.deleteCountry(id);
     }
