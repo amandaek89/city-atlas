@@ -18,10 +18,24 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+
+    /**
+     * Konstruktor för att injicera UserService.
+     *
+     * @param userService - Tjänsten som hanterar användaroperationer.
+     */
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
+    /**
+     * Hämtar en specifik användare baserat på användarnamnet.
+     *
+     * @param username - Användarnamnet för användaren som ska hämtas.
+     * @return ResponseEntity med UserDto-objektet om användaren hittas,
+     *         annars status 404 (Not Found).
+     */
     @GetMapping("/{username}")
     public ResponseEntity<Optional<UserDto>> getUser(@PathVariable String username) {
         if (Objects.isNull(userService.getUserByUsername(username))) {
@@ -29,6 +43,13 @@ public class UserController {
         }
         return ResponseEntity.ok(userService.getUserByUsername(username));
     }
+
+    /**
+     * Hämtar alla användare.
+     *
+     * @return ResponseEntity med en lista över alla användare. Om listan är tom
+     *         returneras status 404 (Not Found).
+     */
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
         if (userService.getAllUsers().isEmpty()) {
@@ -36,17 +57,35 @@ public class UserController {
         }
         return ResponseEntity.ok(userService.getAllUsers());
     }
+
+    /**
+     * Uppdaterar ett lösenord för en specifik användare.
+     *
+     * @param changePasswordDto - DTO som innehåller användarnamn, nuvarande och nytt lösenord.
+     * @return ResponseEntity som innehåller ett framgångsmeddelande om uppdatering lyckas,
+     *         annars felkoder som beskriver problemet (400 om lösenorden är felaktiga).
+     */
     @PutMapping
     public ResponseEntity<String> updatePassword(@RequestBody ChangePasswordDto changePasswordDto) {
-        if (!userService.getPassword(changePasswordDto.getUsername()).equals(changePasswordDto.getCurrentPassword())) {
+        // Kontrollera att nuvarande lösenord är korrekt
+        if (userService.getPassword(changePasswordDto.getUsername()).equals(changePasswordDto.getCurrentPassword())) {
             return ResponseEntity.status(400).body("Current password is incorrect");
         }
+        // Kontrollera att nytt lösenord inte är samma som det gamla
         if (changePasswordDto.getCurrentPassword().equals(changePasswordDto.getNewPassword())) {
             return ResponseEntity.status(400).body("New password cannot be the same as the current password");
         }
+        // Uppdatera lösenordet om allt är korrekt
         userService.updatePassword(changePasswordDto);
         return ResponseEntity.ok("Password updated");
     }
+
+    /**
+     * Raderar en specifik användare baserat på användarnamn.
+     *
+     * @param username - Användarnamnet för användaren som ska raderas.
+     * @return ResponseEntity med ett meddelande om att användaren raderades, eller status 404 om användaren inte hittades.
+     */
     @DeleteMapping("/{username}")
     public ResponseEntity<String> deleteUser(@PathVariable String username) {
         String response = userService.deleteUser(username);
@@ -55,17 +94,27 @@ public class UserController {
         }
         return ResponseEntity.ok("User deleted");
     }
+
+    /**
+     * Sätter roller för en användare. Förhindrar att en användare kan ändra sina egna roller.
+     *
+     * @param userDto - DTO som innehåller användarens roller som ska uppdateras.
+     * @param userDetails - Information om den inloggade användaren (hämtas via JWT).
+     * @return ResponseEntity med det uppdaterade UserDto-objektet eller status 400 om den inloggade användaren försöker ändra sina egna roller.
+     */
     @PutMapping("/roles")
     public ResponseEntity<UserDto> setRoles(@RequestBody UserDto userDto, @AuthenticationPrincipal UserDetails userDetails) {
 
+        // Hämta användarnamnet för den inloggade användaren
         String loggedInUsername = userDetails.getUsername();
 
+        // Kontrollera om användaren försöker ändra sina egna roller
         if (userDto.getUsername().equals(loggedInUsername)) {
             return ResponseEntity.status(400).build();
         }
 
+        // Uppdatera rollerna för den angivna användaren
         return ResponseEntity.ok(userService.setRoles(userDto).get());
     }
-
 
 }

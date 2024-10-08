@@ -62,16 +62,16 @@ public class UserService {
      * @return En sträng som indikerar om lösenordet har uppdaterats eller om användaren inte hittades.
      */
     public String updatePassword(ChangePasswordDto changePasswordDto) {
-        // Hämta användaren baserat på användarnamn
+
         User user = userRepo.findByUsername(changePasswordDto.getUsername());
         if (user != null) {
-            // Uppdatera lösenord och sätt det uppdaterade datumet
+
             user.setPassword(changePasswordDto.getNewPassword());
             user.setUpdatedAt(new Date());
-            userRepo.save(user);  // Spara uppdaterad användare i databasen
-            return "Password updated";  // Returnera framgångsmeddelande
+            userRepo.save(user);
+            return "Password updated";
         } else {
-            return new RuntimeException("User not found").getMessage();  // Returnera felmeddelande om användaren inte hittades
+            return new RuntimeException("User not found").getMessage();
         }
     }
 

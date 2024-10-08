@@ -19,13 +19,24 @@ public class AuthController {
     private final AuthService authService;
     private final UserService userService;
 
+    /**
+     * Konstruktor för att injicera AuthService och UserService.
+     *
+     * @param authService - Tjänsten som hanterar autentisering och registrering.
+     * @param userService - Tjänsten som hanterar användarrelaterade operationer.
+     */
     @Autowired
     public AuthController(AuthService authService, UserService userService) {
         this.authService = authService;
         this.userService = userService;
     }
 
-    // Endpoint för att registrera en ny användare
+    /**
+     * Endpoint för att registrera en ny användare.
+     *
+     * @param authRequest - Begäran som innehåller användarnamn och lösenord för att registrera en användare.
+     * @return ResponseEntity med ett meddelande som anger om registreringen lyckades eller om användaren redan finns (status 409 vid konflikt).
+     */
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody AuthRequest authRequest) {
         String response = authService.register(authRequest);
@@ -35,17 +46,27 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    // Endpoint för att logga in och få JWT-token
+    /**
+     * Endpoint för att logga in en användare och få en JWT-token vid lyckad autentisering.
+     *
+     * @param authRequest - Begäran som innehåller användarnamn och lösenord.
+     * @return ResponseEntity med en JWT-token vid lyckad inloggning, annars en felmeddelande med status 401 (Unauthorized) om inloggningen misslyckas.
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
         String response = authService.authenticate(authRequest);
+
+        // Om användaren inte hittas, returnera status 401 (Unauthorized)
         if (response.equals("User not found")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
-        if (response.equals( "Invalid login credentials")) {
+
+        // Om inloggningsuppgifterna är felaktiga, returnera status 401 (Unauthorized)
+        if (response.equals("Invalid login credentials")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+
+        // Returnera JWT-token vid lyckad inloggning
         return ResponseEntity.ok(new AuthResponse(response));
     }
-
 }
