@@ -2,17 +2,15 @@ package com.cityatlas.controllers;
 
 import com.cityatlas.dtos.ChangePasswordDto;
 import com.cityatlas.dtos.UserDto;
-import com.cityatlas.services.JwtService;
 import com.cityatlas.services.UserService;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -26,28 +24,35 @@ public class UserController {
     }
     @GetMapping("/{username}")
     public ResponseEntity<Optional<UserDto>> getUser(@PathVariable String username) {
+        if (Objects.isNull(userService.getUserByUsername(username))) {
+            return ResponseEntity.status(404).build();
+        }
         return ResponseEntity.ok(userService.getUserByUsername(username));
     }
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
+        if (userService.getAllUsers().isEmpty()) {
+            return ResponseEntity.status(404).build();
+        }
         return ResponseEntity.ok(userService.getAllUsers());
     }
     @PutMapping
-    public ResponseEntity<String> updatePassword(@RequestBody ChangePasswordDto changePasswordDto, @AuthenticationPrincipal UserDetails userDetails) {
-        String username = userDetails.getUsername();
-        String password = userDetails.getPassword();
-        if (changePasswordDto.getNewPassword().equals(password)) {
-            throw new RuntimeException("New password cannot be the same as the old password");
+    public ResponseEntity<String> updatePassword(@RequestBody ChangePasswordDto changePasswordDto) {
+        if (!userService.getPassword(changePasswordDto.getUsername()).equals(changePasswordDto.getCurrentPassword())) {
+            return ResponseEntity.status(400).body("Current password is incorrect");
         }
-        if (changePasswordDto.getCurrentPassword().equals(password)){
-            throw new RuntimeException("Current password is incorrect");
+        if (changePasswordDto.getCurrentPassword().equals(changePasswordDto.getNewPassword())) {
+            return ResponseEntity.status(400).body("New password cannot be the same as the current password");
         }
-        userService.updatePassword(username, changePasswordDto);
+        userService.updatePassword(changePasswordDto);
         return ResponseEntity.ok("Password updated");
     }
     @DeleteMapping("/{username}")
     public ResponseEntity<String> deleteUser(@PathVariable String username) {
-        userService.deleteUser(username);
+        String response = userService.deleteUser(username);
+        if (userService.deleteUser(username).equals(response)) {
+            return ResponseEntity.status(404).body(response);
+        }
         return ResponseEntity.ok("User deleted");
     }
     @PutMapping("/roles")
@@ -56,10 +61,10 @@ public class UserController {
         String loggedInUsername = userDetails.getUsername();
 
         if (userDto.getUsername().equals(loggedInUsername)) {
-            throw new RuntimeException("You cannot change your own role");
+            return ResponseEntity.status(400).build();
         }
 
-        return ResponseEntity.ok(userService.setRoles(userDto));
+        return ResponseEntity.ok(userService.setRoles(userDto).get());
     }
 
 
