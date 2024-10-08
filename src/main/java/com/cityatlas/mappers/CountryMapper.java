@@ -15,19 +15,29 @@ public class CountryMapper {
                 country.getName(),
                 country.getLanguage(),
                 country.getPopulation(),
-                country.getContinent().getId() //hämtar id för Continent iom continent är parent
+                country.getContinent() != null ? country.getContinent().getId() : null // Hämtar id för Continent om den finns
         );
     }
 
-    //konvertera CountryDto till Country entity
+    //konvertera CountryDto till Country entity utan continent
+    public Country toEntity(CountryDto countryDto) {
+        return new Country(
+                countryDto.getId(),
+                countryDto.getName(),
+                countryDto.getLanguage(),
+                countryDto.getPopulation(),
+                null //ingen continent
+        );
+    }
+
+    //konvertera CountryDto till Country entity med continent
     public Country toEntity(CountryDto countryDto, Continent continent) {
         return new Country(
                 countryDto.getId(),
                 countryDto.getName(),
                 countryDto.getLanguage(),
                 countryDto.getPopulation(),
-                continent, //Continent som parent
-                null
+                continent //continent som parent
         );
     }
 }

@@ -29,4 +29,13 @@ public class Country {
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<City> cities;
 
+    public Country(Long id, String name, String language, Long population, Continent continent) {
+        this.id = id;
+        this.name = name;
+        this.language = language;
+        this.population = population;
+        this.continent = continent;
+    }
+
+
 }
