@@ -1,12 +1,16 @@
 package com.cityatlas.dtos;
 
 import com.cityatlas.models.Role;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
     private Long id;
@@ -14,9 +18,4 @@ public class UserDto {
 
     private Set<Role> authorities = new HashSet<>();
 
-    public UserDto(long id, String username, Set<Role> authorities) {
-        this.id = id;
-        this.username = username;
-        this.authorities = authorities;
-    }
 }
