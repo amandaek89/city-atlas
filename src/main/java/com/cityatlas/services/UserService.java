@@ -1,3 +1,4 @@
+package com.cityatlas.services;
 
 import com.cityatlas.dtos.ChangePasswordDto;
 import com.cityatlas.dtos.UserDto;
