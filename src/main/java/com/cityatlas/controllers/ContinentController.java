@@ -1,4 +1,4 @@
-package com.cityatlas.controllers;
+/* package com.cityatlas.controllers;
 
 import com.cityatlas.dtos.ContinentDto;
 import com.cityatlas.services.ContinentService;
@@ -42,4 +42,4 @@ public class ContinentController {
         return ResponseEntity.ok().build();
     }
 
-}
+}*/
