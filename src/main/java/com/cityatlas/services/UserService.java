@@ -60,7 +60,8 @@ public class UserService {
     /**
      * Uppdaterar lösenordet för en användare om användaren hittas.
      *
-     * @param changePasswordDto DTO som innehåller användarnamn och nytt lösenord.
+     * @param username En strän som inetifierar användaren som ska uppdatera sitt lösenord.
+     * @param newEncryptedPassword En sträng som innehåller det nya krypterade lösenordet.
      * @return En sträng som indikerar om lösenordet har uppdaterats eller om användaren inte hittades.
      */
     public String updatePassword(String username, String newEncryptedPassword) {

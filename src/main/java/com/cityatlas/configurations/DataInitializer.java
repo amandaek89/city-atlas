@@ -16,17 +16,20 @@ import java.util.Set;
 @Component
 public class DataInitializer {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
     /**
      * Skapar en CommandLineRunner som initialiserar en admin-användare om den inte redan finns i databasen.
      *
      * @return CommandLineRunner som skapar en admin-användare vid programstart om den saknas.
      */
+    @Autowired
+    DataInitializer(PasswordEncoder passwordEncoder, UserRepo userRepo) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepo = userRepo;
+    }
     @Bean
     CommandLineRunner initAdminUser() {
         return args -> {

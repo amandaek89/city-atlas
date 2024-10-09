@@ -73,6 +73,10 @@ public class UserController {
         // Hämta det krypterade lösenordet från databasen
         String encryptedPassword = userService.getPassword(changePasswordDto.getUsername());
 
+        if(userService.getUserByUsername(changePasswordDto.getUsername()).isEmpty()) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
         // Kontrollera att nuvarande lösenord matchar det krypterade lösenordet
         if (!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), encryptedPassword)) {
             return ResponseEntity.status(400).body("Current password is incorrect");
