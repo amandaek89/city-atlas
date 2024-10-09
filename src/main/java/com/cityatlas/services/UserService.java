@@ -5,6 +5,7 @@ import com.cityatlas.dtos.UserDto;
 import com.cityatlas.models.User;
 import com.cityatlas.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,14 +21,15 @@ public class UserService {
 
     @Autowired
     private final UserRepo userRepo;  // Repository för att interagera med användardatabasen
-
+    private final PasswordEncoder passwordEncoder;  // Verktyg för att kryptera och kontrollera lösenord
     /**
      * Konstruktor som injicerar UserRepo.
      *
      * @param userRepo UserRepo för att utföra CRUD-operationer på användare.
      */
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -61,12 +63,12 @@ public class UserService {
      * @param changePasswordDto DTO som innehåller användarnamn och nytt lösenord.
      * @return En sträng som indikerar om lösenordet har uppdaterats eller om användaren inte hittades.
      */
-    public String updatePassword(ChangePasswordDto changePasswordDto) {
+    public String updatePassword(String username, String newEncryptedPassword) {
 
-        User user = userRepo.findByUsername(changePasswordDto.getUsername());
+        User user = userRepo.findByUsername(username);
         if (user != null) {
 
-            user.setPassword(changePasswordDto.getNewPassword());
+            user.setPassword(newEncryptedPassword);
             user.setUpdatedAt(new Date());
             userRepo.save(user);
             return "Password updated";

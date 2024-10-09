@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Konstruktor för att injicera UserService.
@@ -25,8 +27,9 @@ public class UserController {
      * @param userService - Tjänsten som hanterar användaroperationer.
      */
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -67,18 +70,28 @@ public class UserController {
      */
     @PutMapping
     public ResponseEntity<String> updatePassword(@RequestBody ChangePasswordDto changePasswordDto) {
-        // Kontrollera att nuvarande lösenord är korrekt
-        if (userService.getPassword(changePasswordDto.getUsername()).equals(changePasswordDto.getCurrentPassword())) {
+        // Hämta det krypterade lösenordet från databasen
+        String encryptedPassword = userService.getPassword(changePasswordDto.getUsername());
+
+        // Kontrollera att nuvarande lösenord matchar det krypterade lösenordet
+        if (!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), encryptedPassword)) {
             return ResponseEntity.status(400).body("Current password is incorrect");
         }
+
         // Kontrollera att nytt lösenord inte är samma som det gamla
-        if (changePasswordDto.getCurrentPassword().equals(changePasswordDto.getNewPassword())) {
+        if (passwordEncoder.matches(changePasswordDto.getNewPassword(), encryptedPassword)) {
             return ResponseEntity.status(400).body("New password cannot be the same as the current password");
         }
-        // Uppdatera lösenordet om allt är korrekt
-        userService.updatePassword(changePasswordDto);
+
+        // Kryptera det nya lösenordet innan uppdatering
+        String newEncryptedPassword = passwordEncoder.encode(changePasswordDto.getNewPassword());
+
+        // Uppdatera lösenordet
+        userService.updatePassword(changePasswordDto.getUsername(), newEncryptedPassword);
+
         return ResponseEntity.ok("Password updated");
     }
+
 
     /**
      * Raderar en specifik användare baserat på användarnamn.
