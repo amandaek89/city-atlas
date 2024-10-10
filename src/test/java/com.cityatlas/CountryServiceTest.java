@@ -9,18 +9,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
 public class CountryServiceTest {
 
     @Mock
@@ -58,34 +53,29 @@ public class CountryServiceTest {
     @Test
     void testAddCountry() {
         // Arrange
-        when(countryMapper.toEntity(countryDto)).thenReturn(country); // Använd den nya metoden utan continent
+        when(countryMapper.toEntity(countryDto)).thenReturn(country);
         when(countryRepo.save(country)).thenReturn(country);
         when(countryMapper.toDto(country)).thenReturn(countryDto);
 
         // Act
-        CountryDto result = countryService.addCountry(countryDto); // Ingen continent behövs
+        CountryDto result = countryService.addCountry(countryDto);
 
         // Assert
         assertEquals(country.getName(), result.getName());
     }
 
-
     @Test
     void testUpdateCountry() {
         // Arrange
         when(countryRepo.findById(1L)).thenReturn(Optional.of(country));
-        when(countryMapper.toDto(any(Country.class))).thenReturn(new CountryDto(1L, "Norway", "Norwegian", 5000000L, null));
+        when(countryMapper.toDto(any(Country.class))).thenReturn(countryDto);
 
         // Act
         CountryDto result = countryService.updateCountry(1L, countryDto);
 
         // Assert
-        assertNotNull(result);
-        assertEquals("Norway", result.getName());
-
-        // Verify
-        verify(countryRepo, times(1)).findById(1L);
-        verify(countryRepo, times(1)).save(any(Country.class));
+        assertEquals(country.getName(), result.getName());
+        verify(countryRepo).save(country); // Kontrollera att save() anropades
     }
 
     @Test
@@ -97,6 +87,6 @@ public class CountryServiceTest {
         countryService.deleteCountry(1L);
 
         // Verify
-        verify(countryRepo, times(1)).deleteById(1L);
+        verify(countryRepo).deleteById(1L);
     }
 }
