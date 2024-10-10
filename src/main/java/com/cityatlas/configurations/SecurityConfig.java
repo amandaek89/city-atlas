@@ -44,7 +44,8 @@ public class SecurityConfig {
      * @return En SecurityFilterChain som specificerar säkerhetskonfigurationen.
      * @throws Exception - Om det uppstår något fel under konfigurationen.
      */
-@Bean
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrf -> csrf.disable())  // Inaktivera CSRF-skydd eftersom sessioner inte används
@@ -52,6 +53,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     // Tillåt alla att komma åt /auth/**-vägar utan autentisering
                     auth.requestMatchers("/auth/**").permitAll();
+                    // Tillåt alla att komma åt Swagger UI
+                    auth.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll();
                     // Tillåt användare med roller USER eller ADMIN att komma åt /user/**
                     auth.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN");
                     // Tillåt endast användare med rollen ADMIN att komma åt /admin/**
@@ -66,6 +69,7 @@ public class SecurityConfig {
 
         return httpSecurity.build();
     }
+
 
     /**
      * Konfigurerar CORS-filter för att tillåta specifika domäner, metoder och headers.

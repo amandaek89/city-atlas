@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CountryDto {
+    private Long id;
     private String name;
     private String language;
     private Long population;
@@ -30,6 +31,7 @@ public class CountryDto {
      * @param continentID Kopplingen till världsdel, om den finns
      */
     public CountryDto(Long id, String name, String language, Long population, Long continentID) {
+        this.id = id;
         this.name = name;
         this.language = language;
         this.population = population;
