@@ -1,6 +1,7 @@
 package com.cityatlas.services;
 
 import com.cityatlas.dtos.ContinentDto;
+import com.cityatlas.models.Continent;
 import com.cityatlas.repositories.ContinentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,9 @@ public class ContinentService {
         return continentRepo.findAll().stream().map(ContinentDto::new).collect(Collectors.toList());
     }
 
-    public ContinentDto getContinentById(Long id) {
-        return continentRepo.findById(id).map(ContinentDto::new).orElseThrow(() -> new RuntimeException("Continent not found"));
+    public Continent getContinentById(Long id) {
+        return continentRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Kontinenten med ID " + id + " hittades inte."));
     }
 
     public ContinentDto addContinent(ContinentDto continentDto) {
