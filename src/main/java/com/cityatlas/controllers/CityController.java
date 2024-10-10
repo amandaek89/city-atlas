@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cities") // Endpoint för städer
+@RequestMapping("/user/cities") // Endpoint för städer
 public class CityController {
 
     private final CityService cityService;
