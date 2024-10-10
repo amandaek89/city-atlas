@@ -36,7 +36,7 @@ public class ContinentController {
         return ResponseEntity.ok(continentService.updateContinent(id, updatedContinentDto));
     }
 
-    @PostMapping("/{id}")
+    @DeleteMapping ("/{id}")
     public ResponseEntity<Void> deleteContinent(@PathVariable Long id) {
         continentService.deleteContinent(id);
         return ResponseEntity.ok().build();
