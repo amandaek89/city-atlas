@@ -17,20 +17,20 @@ import java.util.List;
 @AllArgsConstructor
 public class Country {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Automatiskt generering av ett id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //automatiskt generering av ett id
     private Long id;
 
-    private String name; // Landets namn
-    private String language; // Språket som talas i landet
-    private Long population; // Antal invånare i landet
+    private String name;
+    private String language;
+    private Long population;
 
-    // Child till världsdel - KAN VARA NULL
+    //child till världsdel - KAN VARA NULL
     @ManyToOne
-    @JoinColumn(name = "continent_id", nullable = true) // Foreign key till världsdel
+    @JoinColumn(name = "continent_id", nullable = true) //foreign key till världsdel
     private Continent continent;
 
-    // Parent till city
-    // Orphan removal så cities till country tas bort vid radering
+    //parent till city
+    //orphan removal så cities till country tas bort vid radering
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<City> cities;
 

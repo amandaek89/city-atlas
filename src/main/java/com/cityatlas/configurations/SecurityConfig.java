@@ -12,7 +12,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import com.cityatlas.configurations.JwtAuthenticationFilter;
 
 
 import java.util.List;
@@ -45,37 +44,7 @@ public class SecurityConfig {
      * @return En SecurityFilterChain som specificerar säkerhetskonfigurationen.
      * @throws Exception - Om det uppstår något fel under konfigurationen.
      */
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .csrf(csrf -> csrf.disable())  // Inaktivera CSRF-skydd eftersom sessioner inte används
-                .authorizeHttpRequests(auth -> {
-                    // Tillåt åtkomst till H2-konsolen utan autentisering
-                    auth.requestMatchers("/h2-console/**").permitAll();
-                    // Tillåt åtkomst till Swagger och Actuator endpoints utan autentisering
-                    auth.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/actuator/**").permitAll();
-                    // Tillåt användare med roller USER eller ADMIN att komma åt /user/**
-                    auth.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN");
-                    // Tillåt endast användare med rollen ADMIN att komma åt /admin/**
-                    auth.requestMatchers("/admin/**").hasRole("ADMIN");
-                    // Kräver autentisering för alla övriga begäranden
-                    auth.anyRequest().authenticated();
-                })
-                // Ange att sessioner inte skapas (STATELESS)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Lägg till JWT-autentiseringsfiltret före UsernamePasswordAuthenticationFilter
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return httpSecurity.build();
-    }
-
-
-
-
-
-
-
-    /*@Bean
+@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrf -> csrf.disable())  // Inaktivera CSRF-skydd eftersom sessioner inte används

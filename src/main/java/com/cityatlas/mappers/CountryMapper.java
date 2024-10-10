@@ -24,7 +24,7 @@ public class CountryMapper {
                 country.getName(),
                 country.getLanguage(),
                 country.getPopulation(),
-                country.getContinent() != null ? country.getContinent().getId() : null // Hämtar id för Continent om den finns
+                country.getContinent() != null ? country.getContinent().getId() : null //hämtar id för Continent om den finns
         );
     }
 

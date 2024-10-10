@@ -10,10 +10,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CountryDto {
-    private String name; // Landets namn
-    private String language; // Språket som talas
-    private Long population; // Antal invånare
-    private Long continentID; // Kopplingen till världsdel, om den finns
+    private String name;
+    private String language;
+    private Long population;
+    private Long continentID;
 
     /**
      * Standardkonstruktor för CountryDto.
