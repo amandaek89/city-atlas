@@ -52,6 +52,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     // Tillåt alla att komma åt /auth/**-vägar utan autentisering
                     auth.requestMatchers("/auth/**").permitAll();
+                    // Tillåt alla att komma åt Swagger UI
+                    auth.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll();
                     // Tillåt användare med roller USER eller ADMIN att komma åt /user/**
                     auth.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN");
                     // Tillåt endast användare med rollen ADMIN att komma åt /admin/**
