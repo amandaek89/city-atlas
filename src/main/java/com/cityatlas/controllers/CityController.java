@@ -2,47 +2,90 @@ package com.cityatlas.controllers;
 
 import com.cityatlas.dtos.CityDto;
 import com.cityatlas.services.CityService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Kontrollklass för hantering av städer.
+ * Tillhandahåller endpoints för att hämta, lägga till, uppdatera och ta bort städer.
+ */
 @RestController
-@RequestMapping("/user/cities") // Endpoint för städer
+@RequestMapping("/user/cities")
+@Tag(name = "Cities", description = "Endpoints for managing cities")
 public class CityController {
 
     private final CityService cityService;
 
+    /**
+     * Konstruktor för att initialisera CityController med CityService.
+     *
+     * @param cityService tjänst för hantering av städer
+     */
     public CityController(CityService cityService) {
         this.cityService = cityService;
     }
 
-    // Hämta alla städer
+    /**
+     * Hämtar en lista över alla städer.
+     *
+     * @return en lista med {@link CityDto} som representerar alla städer
+     */
     @GetMapping
-    public List<CityDto> getAllCities() {
-        return cityService.getAllCities();
+    @Operation(summary = "Get all cities", description = "Retrieves a list of all cities")
+    public ResponseEntity<List<CityDto>> getAllCities() {
+        return ResponseEntity.ok(cityService.getAllCities());
     }
 
-    // Hämta en stad baserat på ID
+    /**
+     * Hämtar en stad baserat på ID.
+     *
+     * @param id ID för staden som ska hämtas
+     * @return {@link CityDto} som representerar den begärda staden
+     */
     @GetMapping("/{id}")
-    public CityDto getCityById(@PathVariable Long id) {
-        return cityService.getCityById(id);
+    @Operation(summary = "Get city by ID", description = "Retrieves a city by its ID")
+    public ResponseEntity<CityDto> getCityById(@PathVariable Long id) {
+        return ResponseEntity.ok(cityService.getCityById(id));
     }
 
-    // Lägg till en ny stad
+    /**
+     * Lägger till en ny stad.
+     *
+     * @param cityDto dataöverföringsobjekt som innehåller information om den nya staden
+     * @return det tillagda {@link CityDto} objektet
+     */
     @PostMapping
-    public CityDto addCity(@RequestBody CityDto cityDto) {
-        return cityService.addCity(cityDto);
+    @Operation(summary = "Add a new city", description = "Adds a new city to the database")
+    public ResponseEntity<CityDto> addCity(@RequestBody CityDto cityDto) {
+        return ResponseEntity.ok(cityService.addCity(cityDto));
     }
 
-    // Uppdatera information om en stad
+    /**
+     * Uppdaterar information om en stad.
+     *
+     * @param id              ID för den stad som ska uppdateras
+     * @param updatedCityDto dataöverföringsobjekt som innehåller uppdaterad information för staden
+     * @return det uppdaterade {@link CityDto} objektet
+     */
     @PutMapping("/{id}")
-    public CityDto updateCity(@PathVariable Long id, @RequestBody CityDto updatedCityDto) {
-        return cityService.updateCity(id, updatedCityDto);
+    @Operation(summary = "Update a city", description = "Updates the details of an existing city")
+    public ResponseEntity<CityDto> updateCity(@PathVariable Long id, @RequestBody CityDto updatedCityDto) {
+        return ResponseEntity.ok(cityService.updateCity(id, updatedCityDto));
     }
 
-    // Ta bort en stad
+    /**
+     * Tar bort en stad från databasen.
+     *
+     * @param id ID för den stad som ska tas bort
+     */
     @DeleteMapping("/{id}")
-    public void deleteCity(@PathVariable Long id) {
+    @Operation(summary = "Delete a city", description = "Deletes a city from the database")
+    public ResponseEntity<Void> deleteCity(@PathVariable Long id) {
         cityService.deleteCity(id);
+        return ResponseEntity.ok().build();
     }
 }
