@@ -11,31 +11,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user/continents")
 public class ContinentController {
 
     @Autowired
     private ContinentService continentService;
 
-    @GetMapping("")
+    @GetMapping("/user/continents")
     @Operation(summary = "Get all continents", description = "Retrieves a list of all continents")
     public ResponseEntity<List<ContinentDto>> getAllContinents() {
         return ResponseEntity.ok(continentService.getAllContinents());
     }
 
-    @PostMapping("")
+    @PostMapping("/user/continents")
     @Operation(summary = "Add a new continent", description = "Adds a new continent to the database")
     public ResponseEntity<ContinentDto> addContinent(@RequestBody ContinentDto continentDto) {
         return ResponseEntity.ok(continentService.addContinent(continentDto));
     }
 
-    @PutMapping("/admin/{id}")
+    @PutMapping("/admin/continents/{id}")
     @Operation(summary = "Update a continent", description = "Updates the details of an existing continent")
     public ResponseEntity<ContinentDto> updateContinent(@PathVariable Long id, @RequestBody ContinentDto updatedContinentDto) {
         return ResponseEntity.ok(continentService.updateContinent(id, updatedContinentDto));
     }
 
-    @DeleteMapping ("/admin/{id}")
+    @DeleteMapping ("/admin/continents/{id}")
     @Operation(summary = "Delete a continent", description = "Deletes a continent from the database")
     public ResponseEntity<Void> deleteContinent(@PathVariable Long id) {
         continentService.deleteContinent(id);
