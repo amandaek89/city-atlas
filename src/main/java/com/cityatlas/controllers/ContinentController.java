@@ -31,7 +31,7 @@ public class ContinentController {
         return ResponseEntity.ok(continentService.addContinent(continentDto));
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ContinentDto> updateContinent(@PathVariable Long id, @RequestBody ContinentDto updatedContinentDto) {
         return ResponseEntity.ok(continentService.updateContinent(id, updatedContinentDto));
     }
