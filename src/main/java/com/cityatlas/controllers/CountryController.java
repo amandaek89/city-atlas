@@ -64,6 +64,19 @@ public class CountryController {
     }
 
     /**
+     * Hämtar ett specifikt land baserat på dess ID.
+     *
+     * @param id ID för det land som ska hämtas
+     * @return det begärda {@link CountryDto} objektet
+     */
+    @GetMapping("/user/countries/{id}")
+    @Operation(summary = "Get a country by ID", description = "Retrieves a country by its ID")
+    public CountryDto getCountryById(@PathVariable Long id) {
+        return countryService.getCountryById(id);
+    }
+
+
+    /**
      * Tar bort ett land från databasen.
      *
      * @param id ID för det land som ska tas bort

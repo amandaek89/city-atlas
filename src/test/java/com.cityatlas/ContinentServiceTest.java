@@ -56,37 +56,47 @@ public class ContinentServiceTest {
         when(continentRepo.findById(1L)).thenReturn(java.util.Optional.of(continent));
 
         //Act
-        ContinentDto result = continentService.getContinentById(1L);
+        Continent result = continentService.getContinentById(1L);
 
         //Assert
-        assertEquals(continent.getName(), result.getName());
+        assertNotNull(result); // Verifiera att kontinenten inte är null
+        assertEquals(continent.getName(), result.getName()); // Kolla att namnet stämmer
     }
+
 
     @Test
     void testAddContinent() {
         //Arrange
-        when(continentRepo.save(continentDto.toEntity())).thenReturn(continent);
+        Continent newContinent = new Continent(2L, "Asia"); // Skapa en ny kontinent för testet
+        ContinentDto newContinentDto = new ContinentDto(newContinent); // Skapa en DTO för den nya kontinenten
+
+        when(continentRepo.save(any(Continent.class))).thenReturn(newContinent); // Mock sparaoperation
 
         //Act
-        ContinentDto result = continentService.addContinent(continentDto);
+        ContinentDto result = continentService.addContinent(newContinentDto);
 
         //Assert
-        assertEquals(continent.getName(), result.getName());
+        assertNotNull(result);  // Verifiera att resultatet inte är null
+        assertEquals(newContinent.getName(), result.getName());  // Verifiera att namnet är rätt
     }
 
     @Test
     void testUpdateContinent() {
         // Arrange
-        when(continentRepo.findById(1L)).thenReturn(Optional.of(continent));
+        Continent updatedContinent = new Continent(1L, "Africa"); // Skapa en uppdaterad kontinent
+        ContinentDto updatedContinentDto = new ContinentDto(updatedContinent); // Skapa en DTO för uppdateringen
+
+        when(continentRepo.findById(1L)).thenReturn(Optional.of(continent)); // Mock hitta operation
+        when(continentRepo.save(any(Continent.class))).thenReturn(updatedContinent); // Mock spara operation
 
         // Act
-        ContinentDto result = continentService.updateContinent(1L, continentDto);
+        ContinentDto result = continentService.updateContinent(1L, updatedContinentDto);
 
         // Assert
-        assertNotNull(result);
-        assertEquals("Africa", result.getName());
+        assertNotNull(result); // Verifiera att resultatet inte är null
+        assertEquals(updatedContinent.getName(), result.getName()); // Kontrollera att namnet uppdaterades korrekt
 
-        // Verify (Som assert fastän det inte är en assert, används vid mockning)
+        // Verify
         verify(continentRepo, times(1)).findById(1L);
         verify(continentRepo, times(1)).save(any(Continent.class));
     }

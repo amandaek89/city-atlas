@@ -24,6 +24,7 @@ public class ContinentService {
                 .orElseThrow(() -> new RuntimeException("Kontinenten med ID " + id + " hittades inte."));
     }
 
+
     public ContinentDto addContinent(ContinentDto continentDto) {
         return new ContinentDto(continentRepo.save(continentDto.toEntity()));
     }

@@ -1,6 +1,7 @@
 package com.cityatlas.controllers;
 
 import com.cityatlas.dtos.ContinentDto;
+import com.cityatlas.dtos.CountryDto;
 import com.cityatlas.services.ContinentService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class ContinentController {
     public ResponseEntity<List<ContinentDto>> getAllContinents() {
         return ResponseEntity.ok(continentService.getAllContinents());
     }
+
+
+
 
     @PostMapping("/user/continents")
     @Operation(summary = "Add a new continent", description = "Adds a new continent to the database")

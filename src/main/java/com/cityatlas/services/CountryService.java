@@ -148,6 +148,13 @@ public class CountryService {
                 .orElseThrow(() -> new RuntimeException("Kunde inte hitta landet."));
     }
 
+    public CountryDto getCountryById(Long id) {
+        return countryRepo.findById(id)
+                .map(countryMapper::toDto)
+                .orElseThrow(() -> new RuntimeException("Kunde inte hitta landet."));
+    }
+
+
     public void deleteCountry(Long id) {
         countryRepo.deleteById(id);
     }
