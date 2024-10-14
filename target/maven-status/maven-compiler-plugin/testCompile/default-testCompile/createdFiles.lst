@@ -1,0 +1,5 @@
+com\cityatlas\CityServiceTest.class
+com\cityatlas\AuthServiceTest.class
+com\cityatlas\ContinentServiceTest.class
+com\cityatlas\CountryServiceTest.class
+com\cityatlas\UserServiceTest.class
