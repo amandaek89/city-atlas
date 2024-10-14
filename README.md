@@ -9,6 +9,7 @@
 - Isabella Lindquist
 - Caroline Eklund
 - Amanda Ek
+- Andre Lilja
 
 ## Översikt
 **City-atlas** är ett API för att hämta, hantera och presentera information om städer, länder och världsdelar. 
