@@ -87,6 +87,8 @@ public class SecurityConfig {
         // Tillåt headers som Authorization och Content-Type
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 
+        config.setAllowCredentials(true);
+
         // Skapa en källa som matchar alla URL-mönster (/**) med ovanstående konfiguration
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
