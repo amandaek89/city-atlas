@@ -89,3 +89,6 @@ CityAtlas API är byggt med moderna webbutvecklingstekniker, inklusive:
     - **Elastic Beanstalk**: För att automatisera distribution och skalning av applikationen.
     - **CodeBuild**: För att automatisera byggprocesser och testning.
     - **CodePipeline**: För att skapa en CI/CD-pipeline som automatiserar byggning, testning och distribution.
+
+
+
