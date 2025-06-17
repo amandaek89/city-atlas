@@ -11,7 +11,7 @@
 - Amanda Ek
 
 ## Översikt
-**City-atlas** är ett API för att hämta, hantera och presentera information om städer, länder och världsdelar. 
+**City-atlas** är ett API för att hämta, hantera och presentera information om städer, länder och världsdelar.
 Detta API gör det möjligt för utvecklare att enkelt integrera geografisk data i sina applikationer och skapa engagerande användarupplevelser.
 
 ## Inloggningsfunktioner och Rollbaserad Accesskontroll
@@ -22,7 +22,7 @@ Vid uppstart skapas automatiskt en användare med följande uppgifter:
 - **Användarnamn**: `admin`
 - **Lösenord**: `admin`
 - **Roll**: `ADMIN`
-  
+
 Denna användare har fulla behörigheter och kan lägga till eller hantera andra användare i systemet.
 
 ## Användarroller
@@ -76,7 +76,7 @@ Städer, länder och världsdelar är kopplade till varandra genom en hierarkisk
 - **JWT (JSON Web Tokens)** används för att verifiera användares identitet och behörigheter. När en användare loggar in får de en JWT-token som används för att autentisera deras begäran.
 - **PasswordEncoder**: Lösenord för alla användare krypteras vid skapande och lagras aldrig i klartext.
 - **CORS-konfiguration** är inställd för att tillåta begäran från betrodda domäner, vilket möjliggör att front-end och back-end kan kommunicera säkert över olika ursprung.
-  
+
 ## Teknologier
 CityAtlas API är byggt med moderna webbutvecklingstekniker, inklusive:
 - **Spring Boot**: Används för backend-utveckling.
@@ -85,10 +85,10 @@ CityAtlas API är byggt med moderna webbutvecklingstekniker, inklusive:
 - **JUnit**: För enhetstestning av API:t.
 - **Swagger**: För dokumentation av API-endpoints.
 - **AWS**: Används för molnhosting och infrastrukturhantering:
-  - **RDS (Relational Database Service)**: För att hantera och skala MySQL-databasen.
-  - **Elastic Beanstalk**: För att automatisera distribution och skalning av applikationen.
-  - **CodeBuild**: För att automatisera byggprocesser och testning.
-  - **CodePipeline**: För att skapa en CI/CD-pipeline som automatiserar byggning, testning och distribution.
+    - **RDS (Relational Database Service)**: För att hantera och skala MySQL-databasen.
+    - **Elastic Beanstalk**: För att automatisera distribution och skalning av applikationen.
+    - **CodeBuild**: För att automatisera byggprocesser och testning.
+    - **CodePipeline**: För att skapa en CI/CD-pipeline som automatiserar byggning, testning och distribution.
 
 
 
